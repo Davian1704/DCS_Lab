@@ -57,7 +57,7 @@ public class SerialTest extends Thread{
 
 class Pers implements Serializable{
   String nume;
-  //transient String nume;
+//  transient String nume;
   int varsta;
 
   Pers(String n, int v){
