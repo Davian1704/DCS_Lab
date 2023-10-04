@@ -35,7 +35,7 @@ public class Server {
         line = in.readLine();
         System.out.println("Server a receptionat:"+line);
         String[] numbers = line.split(" ");
-        float num1 = Integer.parseInt(numbers[0]);
+        int num1 = Integer.parseInt(numbers[0]);
         int num2 = Integer.parseInt(numbers[1]);
         float result = num2 / num1 * 100;
         out.println(result);
