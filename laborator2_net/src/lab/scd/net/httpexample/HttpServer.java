@@ -16,9 +16,9 @@ import java.util.StringTokenizer;
 public class HttpServer extends Thread
 {
 	//portul standard
-	private final static int PORT = 80;
+	private final static int PORT = 8080;
 	
-	private final String iniContext="c:/temp/ServerHTTP/webdocs";
+	private final String iniContext="C:\\Users\\davia\\Desktop";
 	private boolean alive;
 	
 	private ServerSocket ss;
@@ -103,7 +103,7 @@ class ProcesRequest extends Thread
 		
 		tmp=strT.nextToken();
 		if((tmp.equals("/")) || (tmp.endsWith("/"))) {
-			fileN = fileN+tmp+"index.htm";
+			fileN = fileN+tmp+"index.html";
 			System.err.println("CERERE:"+fileN);
 			return fileN;
 		}

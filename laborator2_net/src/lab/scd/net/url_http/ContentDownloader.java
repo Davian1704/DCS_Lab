@@ -21,7 +21,7 @@ public class ContentDownloader {
         String url = "http://utcluj.ro/index.html";
 //        Open the URL for reading
         try {
-	        URL u = new URL(args[0]);
+	        URL u = new URL(url);
 	        try {
 		        Object o = u.getContent( );
 		        System.out.println("I got a " + o.getClass().getName( ));
