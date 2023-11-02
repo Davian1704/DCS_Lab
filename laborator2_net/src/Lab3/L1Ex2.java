@@ -1,131 +1,160 @@
 package Lab3;
 
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import Fuzzy.FuzzyDefuzzy;
-import Fuzzy.FuzzyToken;
 import Fuzzy.FuzzyValue;
 import Fuzzy.TwoXTwoTable;
+import Main.FuzzyPVizualzer;
+import core.TableParser;
+import core.FuzzyPetriLogic.*;
+import core.FuzzyPetriLogic.Executor.*;
+import core.FuzzyPetriLogic.PetriNet.*;
+import core.FuzzyPetriLogic.PetriNet.Recorders.*;
+import core.FuzzyPetriLogic.Tables.*;
 
 public class L1Ex2 {
-	public static TwoXTwoTable createInversor() {
 
-		// construct tabela1 FLRS for inversor, first output
-		Map<FuzzyValue, Map<FuzzyValue, FuzzyValue>> ruleTable1 = new EnumMap<>(FuzzyValue.class);
+	// FLRS table for T0 that implements P0-P1
 
-		Map<FuzzyValue, FuzzyValue> nlLine = new EnumMap<>(FuzzyValue.class);
-		ruleTable1.put(FuzzyValue.NL, nlLine);
-		nlLine.put(FuzzyValue.NL, FuzzyValue.NL);
-		nlLine.put(FuzzyValue.NM, FuzzyValue.NL);
-		nlLine.put(FuzzyValue.ZR, FuzzyValue.NL);
-		nlLine.put(FuzzyValue.PM, FuzzyValue.NM);
-		nlLine.put(FuzzyValue.PL, FuzzyValue.ZR);
+	String differentiator = "" + //
 
-		Map<FuzzyValue, FuzzyValue> nmLine = new EnumMap<>(FuzzyValue.class);
-		ruleTable1.put(FuzzyValue.NM, nmLine);
-		nmLine.put(FuzzyValue.NL, FuzzyValue.NL);
-		nmLine.put(FuzzyValue.NM, FuzzyValue.NL);
-		nmLine.put(FuzzyValue.ZR, FuzzyValue.NM);
-		nmLine.put(FuzzyValue.PM, FuzzyValue.ZR);
-		nmLine.put(FuzzyValue.PL, FuzzyValue.PM);
+			"{[<ZR><NM><NL><NL><NL>]" + //
 
-		Map<FuzzyValue, FuzzyValue> zrLine = new EnumMap<>(FuzzyValue.class);
-		ruleTable1.put(FuzzyValue.ZR, zrLine);
-		zrLine.put(FuzzyValue.NL, FuzzyValue.NL);
-		zrLine.put(FuzzyValue.NM, FuzzyValue.NM);
-		zrLine.put(FuzzyValue.ZR, FuzzyValue.ZR);
-		zrLine.put(FuzzyValue.PM, FuzzyValue.PM);
-		zrLine.put(FuzzyValue.PL, FuzzyValue.PL);
+			" [<PM><ZR><NM><NL><NL>]" + //
 
-		Map<FuzzyValue, FuzzyValue> pmLine = new EnumMap<>(FuzzyValue.class);
-		ruleTable1.put(FuzzyValue.PM, pmLine);
-		pmLine.put(FuzzyValue.NL, FuzzyValue.NM);
-		pmLine.put(FuzzyValue.NM, FuzzyValue.ZR);
-		pmLine.put(FuzzyValue.ZR, FuzzyValue.PM);
-		pmLine.put(FuzzyValue.PM, FuzzyValue.PL);
-		pmLine.put(FuzzyValue.PL, FuzzyValue.PL);
+			" [<PL><PM><ZR><NM><NL>]" + //
 
-		Map<FuzzyValue, FuzzyValue> plLine = new EnumMap<>(FuzzyValue.class);
-		ruleTable1.put(FuzzyValue.PL, plLine);
-		plLine.put(FuzzyValue.NL, FuzzyValue.ZR);
-		plLine.put(FuzzyValue.NM, FuzzyValue.PM);
-		plLine.put(FuzzyValue.ZR, FuzzyValue.PL);
-		plLine.put(FuzzyValue.PM, FuzzyValue.PL);
-		plLine.put(FuzzyValue.PL, FuzzyValue.PL);
+			" [<PL><PL><PM><ZR><NM>]" + //
 
-		// construct tabela2 FLRS for inversor, the second output
-		Map<FuzzyValue, Map<FuzzyValue, FuzzyValue>> ruleTable2 = new EnumMap<>(FuzzyValue.class);
+			" [<PL><PL><PL><PM><ZR>]}";
 
-		nlLine = new EnumMap<>(FuzzyValue.class);
-		ruleTable2.put(FuzzyValue.NL, nlLine);
-		nlLine.put(FuzzyValue.NL, FuzzyValue.ZR);
-		nlLine.put(FuzzyValue.NM, FuzzyValue.NM);
-		nlLine.put(FuzzyValue.ZR, FuzzyValue.NL);
-		nlLine.put(FuzzyValue.PM, FuzzyValue.NL);
-		nlLine.put(FuzzyValue.PL, FuzzyValue.NL);
+	// FLRS table for T1 that makes the selection according to the result P0-P1
+	// (positive or negative)
 
-		nmLine = new EnumMap<>(FuzzyValue.class);
-		ruleTable2.put(FuzzyValue.NM, nmLine);
-		nmLine.put(FuzzyValue.NL, FuzzyValue.PM);
-		nmLine.put(FuzzyValue.NM, FuzzyValue.ZR);
-		nmLine.put(FuzzyValue.ZR, FuzzyValue.NM);
-		nmLine.put(FuzzyValue.PM, FuzzyValue.NL);
-		nmLine.put(FuzzyValue.PL, FuzzyValue.NL);
+	String separator = "{[<NL,FF><NL,FF><FF,FF><FF,PL><FF,PL>]}";
 
-		zrLine = new EnumMap<>(FuzzyValue.class);
-		ruleTable2.put(FuzzyValue.ZR, zrLine);
-		zrLine.put(FuzzyValue.NL, FuzzyValue.PL);
-		zrLine.put(FuzzyValue.NM, FuzzyValue.PM);
-		zrLine.put(FuzzyValue.ZR, FuzzyValue.ZR);
-		zrLine.put(FuzzyValue.PM, FuzzyValue.NM);
-		zrLine.put(FuzzyValue.PL, FuzzyValue.NL);
+	public L1Ex2() {
+		// the Petri network is being constructed
+		TableParser parser = new TableParser();
+		FuzzyPetriNet petriNet = new FuzzyPetriNet();
 
-		pmLine = new EnumMap<>(FuzzyValue.class);
-		ruleTable2.put(FuzzyValue.PM, pmLine);
-		pmLine.put(FuzzyValue.NL, FuzzyValue.PL);
-		pmLine.put(FuzzyValue.NM, FuzzyValue.PL);
-		pmLine.put(FuzzyValue.ZR, FuzzyValue.PM);
-		pmLine.put(FuzzyValue.PM, FuzzyValue.ZR);
-		pmLine.put(FuzzyValue.PL, FuzzyValue.NM);
+		// adding the input places
+		int p0Inp = petriNet.addInputPlace();
+		int p1Inp = petriNet.addInputPlace();
 
-		plLine = new EnumMap<>(FuzzyValue.class);
-		ruleTable2.put(FuzzyValue.PL, plLine);
-		plLine.put(FuzzyValue.NL, FuzzyValue.PL);
-		plLine.put(FuzzyValue.NM, FuzzyValue.PL);
-		plLine.put(FuzzyValue.ZR, FuzzyValue.PL);
-		plLine.put(FuzzyValue.PM, FuzzyValue.PM);
-		plLine.put(FuzzyValue.PL, FuzzyValue.ZR);
+		// attaching to the transition t0 the corresponding FLRS table
+		TwoXOneTable diffTable = parser.parseTwoXOneTable(differentiator);
+		int t0 = petriNet.addTransition(0, diffTable);
 
-		// returning FLRS table with two inputs and two outputs
+		// add the arcs and the weights corresponding to the Petri Net
+		petriNet.addArcFromPlaceToTransition(p0Inp, t0, 1.0);
+		petriNet.addArcFromPlaceToTransition(p1Inp, t0, 1.0);
 
-		return new TwoXTwoTable(ruleTable1, ruleTable2);
+		// add the places and arc corresponding to the Petri Net
+		int p2 = petriNet.addPlace();
+		petriNet.addArcFromTransitionToPlace(t0, p2);
+		int t1 = petriNet.addTransition(0,
+		parser.parseOneXTwoTable(separator));
+		petriNet.addArcFromPlaceToTransition(p2, t1, 1.0);
+		int p3 = petriNet.addPlace();
+		petriNet.addArcFromTransitionToPlace(t1, p3);
+		int p4 = petriNet.addPlace();
+		petriNet.addArcFromTransitionToPlace(t1, p4);
+		int t2Out = petriNet.addOuputTransition(OneXOneTable.defaultTable());
+		petriNet.addArcFromPlaceToTransition(p3, t2Out, 1.0);
+
+		// associating an action of the output transition t2
+		Consumer cons = new Consumer<FuzzyToken>() {
+			@Override
+			public void accept(FuzzyToken t) {
+				System.out.println("Output From Transition 2: " + t.toString());
+			}
+		};
+		petriNet.addActionForOuputTransition(t2Out, cons);
+
+		int t3Out = petriNet.addOuputTransition(OneXOneTable.defaultTable());
+
+		petriNet.addArcFromPlaceToTransition(p4, t3Out, 1.0);
+
+		// associating an action of the output transition t3
+		Consumer consumer = new Consumer<FuzzyToken>() {
+			@Override
+			public void accept(FuzzyToken t) {
+				System.out.println("Output From Transition 3: " + t.toString());
+			}
+		};
+		petriNet.addActionForOuputTransition(t3Out, consumer);
+
+		// creating the date Petri Net executor and specifying the period in
+		// milliseconds
+
+		AsyncronRunnableExecutor executor = new AsyncronRunnableExecutor(petriNet, 20);
+
+		// creating an object for visualizing the behavior of the Petri net
+
+		FullRecorder recorder = new FullRecorder();
+
+		executor.setRecorder(recorder);
+
+		FuzzyDriver driver = FuzzyDriver.createDriverFromMinMax(-1.0, 1.0);
+
+		// launching the execution of the thread that contains the executor
+
+		(new Thread(executor)).start();
+
+		for (int i = 0; i < 100; i++) {
+
+			// constructing the dictionary collection (map) for inputs
+
+			Map<Integer, FuzzyToken> inps = new HashMap<>();
+
+			if (i % 10 < 5) {
+
+				// placing the fuzzyficated token
+
+				inps.put(p0Inp, driver.fuzzifie(i / 100.0));
+
+				inps.put(p1Inp, driver.fuzzifie(i / -100.0));
+
+			} else {
+
+				inps.put(p1Inp, driver.fuzzifie(i / 100.0));
+
+				inps.put(p0Inp, driver.fuzzifie(i / -100.0));
+
+			}
+
+			// placing the input tokens for the executer
+
+			executor.putTokenInInputPlace(inps);
+
+			try {
+
+				Thread.sleep(5);
+
+			} catch (InterruptedException e) {
+
+				e.printStackTrace();
+
+			}
+
+		}
+
+		executor.stop();
+
+		// visualizing the Petri Net and its behavoir.
+
+		FuzzyPVizualzer.visualize(petriNet, recorder);
+
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] main) {
 
-		double w1 = 0.33;
-		double w2 = 1.5;
+		new L1Ex2();
 
-		// specifying the limits for fuzzyfication, defuzzyfication
-		FuzzyDefuzzy fuzDefuz = new FuzzyDefuzzy(-1.0, -0.5, 0.0, 0.5, 1.0);
-
-		// creating FLRS table for tow inputs and two outputs
-		TwoXTwoTable inversor = createInversor();
-
-		// giving the two inputs
-		double x1 = -0.33;
-		double x2 = 0.12;
-
-		// multiplying the inputs with the amplification and fuzzyfication factors
-		FuzzyToken inpToken1 = fuzDefuz.fuzzyfie(x1 * w1);
-		FuzzyToken inpToken2 = fuzDefuz.fuzzyfie(x2 * w2);
-
-		// executing the FLRS table
-		FuzzyToken[] out = inversor.execute(inpToken1, inpToken2);
-
-		// displaying the defuzzyfication results
-		System.out.println("x3 :: " + fuzDefuz.defuzzify(out[0]));
-		System.out.println("x4 :: " + fuzDefuz.defuzzify(out[1]));
 	}
 }
