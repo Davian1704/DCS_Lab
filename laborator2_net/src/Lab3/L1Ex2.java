@@ -35,7 +35,7 @@ public class L1Ex2 {
 	// FLRS table for T1 that makes the selection according to the result P0-P1
 	// (positive or negative)
 
-	String separator = "{[<NL,FF><NL,FF><FF,FF><FF,PL><FF,PL>]}";
+	String separator = "{[<FF,NL><FF,NL><FF,FF><PL,FF><PL,FF>]}";
 
 	public L1Ex2() {
 		// the Petri network is being constructed
