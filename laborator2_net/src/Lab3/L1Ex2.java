@@ -112,21 +112,13 @@ public class L1Ex2 {
 
 			Map<Integer, FuzzyToken> inps = new HashMap<>();
 
-			if (i % 10 < 5) {
-
+			
 				// placing the fuzzyficated token
 
 				inps.put(p0Inp, driver.fuzzifie(Math.sin(Math.toRadians(i))));
 
 				inps.put(p1Inp, driver.fuzzifie(Math.cos(Math.toRadians(i))));
 
-			} else {
-
-				inps.put(p1Inp, driver.fuzzifie(Math.sin(i)));
-
-				inps.put(p0Inp, driver.fuzzifie(Math.cos(i)));
-
-			}
 
 			// placing the input tokens for the executer
 

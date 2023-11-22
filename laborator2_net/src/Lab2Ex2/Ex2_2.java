@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.*;
 
-public class Ex2 {
+public class Ex2_2 {
 	public static void main(String args[]) throws IOException {
 		JFrame frame = new JFrame("(Self)Messaging App");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -26,7 +26,7 @@ public class Ex2 {
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new Sender_2(outputArea).start();
+				new Sender(outputArea).start();
 				
 			}
 		});
@@ -35,14 +35,14 @@ public class Ex2 {
 		frame.setLayout(null);
 		frame.setVisible(true);
 		
-		new Reciever_2("Serve", inputField).start();
+		new Reciever("Serve", inputField).start();
 	}
 }
 
-class Sender extends Thread{
+class Sender_2 extends Thread{
 	
 	JTextArea outputArea;
-	public Sender(JTextArea outputArea) {
+	public Sender_2(JTextArea outputArea) {
 		this.outputArea=outputArea;
 	}
 	
@@ -51,7 +51,7 @@ class Sender extends Thread{
 			DatagramSocket socket = new DatagramSocket();
 			byte[] buf = new byte[256];
 			InetAddress adress = InetAddress.getByName("localhost");
-			DatagramPacket packet = new DatagramPacket(buf, buf.length, adress, 4445);
+			DatagramPacket packet = new DatagramPacket(buf, buf.length, adress, 4444);
 			socket.send(packet);
 			
 			packet= new DatagramPacket(buf, buf.length);
@@ -76,12 +76,12 @@ class Sender extends Thread{
 	}
 }
 
-class Reciever extends Thread{
+class Reciever_2 extends Thread{
 	
 	private DatagramSocket socket = null;
 	private JTextField inputField;
 	
-	public Reciever(String name, JTextField inputField) throws IOException {
+	public Reciever_2(String name, JTextField inputField) throws IOException {
 		super(name);
 		socket = new DatagramSocket(4445);
 		this.inputField = inputField;
