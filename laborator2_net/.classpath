@@ -8,6 +8,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/mail.jar"/>
 	<classpathentry kind="lib" path="lib/activation.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Davian/Desktop/Programe/GitHub/DCS_Lab/FuzzPVizual-all-v0.00005.jar"/>
+	<classpathentry kind="lib" path="src/Lab3/FuzzPVizual-all-v0.00005.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
