@@ -58,7 +58,6 @@ public class FirstOrderPIControl {
     // specify the exit interval of the system
     FuzzyDriver plantInDriver = FuzzyDriver.createDriverFromMinMax(-0.6, +0.6);
     FuzzyDriver userCommandInDriver = FuzzyDriver.createDriverFromMinMax(-0.6, +0.6);
-    FuzzyDriver.createDriverFromMinMax(-1.0, 1.0);
     FuzzyDriver controlOutDriver = FuzzyDriver.createDriverFromMinMax(-1.0, 1.0);
 
     // the Petri Net is being built
@@ -75,7 +74,7 @@ public class FirstOrderPIControl {
 
     int p2InpSys = net.addInputPlace();
     int t1 = net.addTransition(0, parser.parseTable(reader));
-    net.addArcFromPlaceToTransition(p1, t1, 1.0);
+    net.addArcFromPlaceToTransition(p1, t1, 0.0);
     net.addArcFromPlaceToTransition(p2InpSys, t1, 1.0);
 
     int p3 = net.addPlace();
@@ -101,25 +100,6 @@ public class FirstOrderPIControl {
 	net.setInitialMarkingForPlace(p7Mem, FuzzyToken.zeroToken());
     net.addArcFromTransitionToPlace(t4delay, p7Mem);
     net.addArcFromPlaceToTransition(p5, t3, 0.8);
-
-	int p12Mem = net.addPlace();
-	net.setInitialMarkingForPlace(p12Mem, FuzzyToken.zeroToken());
-	net.addArcFromTransitionToPlace(t4delay, p12Mem);
-
-	int t8Delay = net.addTransition(1, OneXOneTable.defaultTable());
-	net.addArcFromPlaceToTransition(p12Mem, t8Delay, 1.0);
-
-	int p13Mem = net.addPlace();
-	net.setInitialMarkingForPlace(p13Mem, FuzzyToken.zeroToken());
-	net.addArcFromTransitionToPlace(t8Delay, p13Mem);
-
-	int t9 = net.addTransition(0, parser.parseTable(adder));
-	net.addArcFromPlaceToTransition(p13Mem, t9, 0.2);
-	net.addArcFromPlaceToTransition(p7Mem, t9, 1.0);
-
-	int p14 = net.addPlace();
-	net.addArcFromTransitionToPlace(t9, p14);
-	net.addArcFromPlaceToTransition(p14, t3, 0.8);
 
 	int p8 = net.addPlace();
     net.addArcFromTransitionToPlace(t3, p8);
@@ -153,6 +133,26 @@ public class FirstOrderPIControl {
         }
     });
 
+	
+
+	int p12Mem = net.addPlace();
+	net.setInitialMarkingForPlace(p12Mem, FuzzyToken.zeroToken());
+	net.addArcFromTransitionToPlace(t4delay, p12Mem);
+
+	int t8Delay = net.addTransition(1, OneXOneTable.defaultTable());
+	net.addArcFromPlaceToTransition(p12Mem, t8Delay, 1.0);
+
+	int p13Mem = net.addPlace();
+	net.setInitialMarkingForPlace(p13Mem, FuzzyToken.zeroToken());
+	net.addArcFromTransitionToPlace(t8Delay, p13Mem);
+
+	int t9 = net.addTransition(0, parser.parseTable(adder));
+	net.addArcFromPlaceToTransition(p13Mem, t9, 0.2);
+	net.addArcFromPlaceToTransition(p7Mem, t9, 1.0);
+
+	int p14 = net.addPlace();
+	net.addArcFromTransitionToPlace(t9, p14);
+	net.addArcFromPlaceToTransition(p14, t3, 0.8);
     AsyncronRunnableExecutor executor = new AsyncronRunnableExecutor(net, period);
     FullRecorder recorder = new FullRecorder();
     executor.setRecorder(recorder);

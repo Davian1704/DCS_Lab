@@ -1,13 +1,9 @@
 package Lab3;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import Fuzzy.FuzzyDefuzzy;
-import Fuzzy.FuzzyValue;
-import Fuzzy.TwoXTwoTable;
 import Main.FuzzyPVizualzer;
 import core.TableParser;
 import core.FuzzyPetriLogic.*;
