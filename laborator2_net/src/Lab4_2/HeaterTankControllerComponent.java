@@ -7,8 +7,6 @@ import core.FuzzyPetriLogic.PetriNet.Recorders.FullRecorder;
 import core.TableParser;
 import core.FuzzyPetriLogic.FuzzyToken;
 import core.FuzzyPetriLogic.Tables.OneXOneTable;
-import core.FuzzyPetriLogic.Tables.OneXTwoTable;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;

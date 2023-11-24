@@ -4,8 +4,6 @@ import java.util.List;
 import Main.FuzzyPVizualzer;
 import Main.Plotter;
 
-import java.util.ArrayList;
-
 import View.MainView;
 
 

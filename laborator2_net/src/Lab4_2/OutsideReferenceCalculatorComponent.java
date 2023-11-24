@@ -2,8 +2,6 @@ package Lab4_2;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
-
 import core.TableParser;
 import core.FuzzyPetriLogic.FuzzyDriver;
 import core.FuzzyPetriLogic.FuzzyToken;
@@ -55,7 +53,7 @@ public class OutsideReferenceCalculatorComponent {
         
         int p1OustideTemInp = net.addInputPlace();
 
-        int t0 = net.addTransition(0, parser.parseTwoXOneTable(reader));
+        int t0 = net.addTransition(0, parser.parseTwoXTwoTable(reader));
         net.addArcFromPlaceToTransition(p0, t0, 0.0);
         net.addArcFromPlaceToTransition(p1OustideTemInp, t0, 1.0);
 
@@ -69,8 +67,8 @@ public class OutsideReferenceCalculatorComponent {
         net.addArcFromPlaceToTransition(p2, t1Delay, 1.0);
         net.addArcFromTransitionToPlace(p0, t1Delay);
 
-        int tr2Out = net.addOuputTransition(parser.parseOneXOneTable(t2Table));
-        net.addArcFromPlaceToTransition(p3, tr2Out, 1.0);
+        t2Out = net.addOuputTransition(parser.parseOneXOneTable(t2Table));
+        net.addArcFromPlaceToTransition(p3, t2Out, 1.0);
         outsideTempDriver = FuzzyDriver.createDriverFromMinMax(-30, 10);
 
         tankWaterTemeDriver = FuzzyDriver.createDriverFromMinMax(45, 68);
@@ -86,16 +84,6 @@ public class OutsideReferenceCalculatorComponent {
 
         execcutor.setRecorder(rec);
 
-        net.addActionForOuputTransition(tr2Out, new Consumer<FuzzyToken>() {
-
-            @Override
-            public void accept(FuzzyToken tk) {
-
-                plant.setHeaterGasCmd(tankWaterTemeDriver.defuzzify(tk));
-
-            }
-
-        });
     }
 
 
