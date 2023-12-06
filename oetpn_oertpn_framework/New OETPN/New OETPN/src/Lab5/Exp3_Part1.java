@@ -1,4 +1,4 @@
-package OETPN;
+package Lab5;
 
 import java.util.ArrayList;
 
@@ -136,6 +136,120 @@ public class Exp3_Part1 {
 
 		return mpn;
 	}
+	
+	public static PetriNet PN4() {
+		// ----------------------- SubPetri ------------------------------------
+		PetriNet mpn = new PetriNet();
+		mpn.PetriNetName = "PN4";
+		mpn.NetworkPort = 0;
+
+		DataFloat constantVal = new DataFloat();
+		constantVal.SetName("constantVal");
+		constantVal.SetValue(0.2f);
+		mpn.ConstantPlaceList.add(constantVal);
+		
+		DataFloat constantVal2 = new DataFloat();
+		constantVal2.SetName("constantVal2");
+		constantVal2.SetValue(4.0f);
+		mpn.ConstantPlaceList.add(constantVal2);
+
+		DataFloat p31 = new DataFloat();
+		p31.SetName("p31");
+		p31.SetValue(1.0f);
+		mpn.PlaceList.add(p31);
+
+		DataFloat p32 = new DataFloat();
+		p32.SetName("p32");
+		mpn.PlaceList.add(p32);
+
+		DataFloat p33 = new DataFloat();
+		p33.SetName("p33");
+		mpn.PlaceList.add(p33);
+
+		DataFloat p34 = new DataFloat();
+		p34.SetName("p34");
+		mpn.PlaceList.add(p34);
+
+		DataTransfer p35 = new DataTransfer();
+		p35.SetName("p35");
+		p35.Value = new TransferOperation("localhost", "1080", "p6");
+		mpn.PlaceList.add(p35);
+
+
+		// T31 ------------------------------------------------
+		PetriTransition t31 = new PetriTransition(mpn);
+		t31.TransitionName = "t31";
+		t31.InputPlaceName.add("p31");
+
+		Condition T31Ct1 = new Condition(t31, "p31", TransitionCondition.NotNull);
+
+		GuardMapping grdT31 = new GuardMapping();
+		grdT31.condition = T31Ct1;
+
+		ArrayList<String> lstInput = new ArrayList<String>();
+		lstInput.add("p31");
+		lstInput.add("constantVal");
+		grdT31.Activations.add(new Activation(t31, lstInput, TransitionOperation.Add, "p32"));
+
+		t31.GuardMappingList.add(grdT31);
+		t31.Delay = 0;
+		mpn.Transitions.add(t31);
+
+		// T32 ------------------------------------------------
+		PetriTransition t32 = new PetriTransition(mpn);
+		t32.TransitionName = "t32";
+		t32.InputPlaceName.add("p32");
+
+		Condition T32Ct1 = new Condition(t32, "p32", TransitionCondition.NotNull);
+
+		GuardMapping grdT32 = new GuardMapping();
+		grdT32.condition = T32Ct1;
+
+		grdT32.Activations.add(new Activation(t32, "p32", TransitionOperation.Move, "p33"));
+
+		t32.GuardMappingList.add(grdT32);
+		t32.Delay = 0;
+		mpn.Transitions.add(t32);
+
+		// T33 ------------------------------------------------
+		PetriTransition t33 = new PetriTransition(mpn);
+		t33.TransitionName = "t33";
+		t33.InputPlaceName.add("p34");
+
+		Condition T33Ct1 = new Condition(t33, "p33", TransitionCondition.LessThan, "constantVal2");
+
+		GuardMapping grdT33 = new GuardMapping();
+		grdT33.condition = T33Ct1;
+
+		grdT33.Activations.add(new Activation(t33, "p33", TransitionOperation.SendOverNetwork, "p34"));
+		grdT33.Activations.add(new Activation(t33, "p33", TransitionOperation.Move, "p31"));
+
+		t33.GuardMappingList.add(grdT33);
+		t33.Delay = 0;
+		mpn.Transitions.add(t33);
+
+		// T34 ------------------------------------------------
+		PetriTransition t34 = new PetriTransition(mpn);
+		t34.TransitionName = "t34";
+		t34.InputPlaceName.add("p33");
+
+		Condition t34Ct1 = new Condition(t34, "p33", TransitionCondition.NotNull);
+		Condition t34Ct2 = new Condition(t34, "p33", TransitionCondition.MoreThan, "constantVal2");
+		t34Ct1.SetNextCondition(LogicConnector.AND, t34Ct2);
+
+		GuardMapping grdT34 = new GuardMapping();
+		grdT34.condition = t34Ct1;
+
+		grdT34.Activations.add(new Activation(t34, "", TransitionOperation.StopPetriNet, ""));
+
+		t34.GuardMappingList.add(grdT34);
+		t34.Delay = 0;
+		mpn.Transitions.add(t34);
+
+		mpn.Delay = 1000;
+
+		return mpn;
+	}
 
 	public static void main(String[] args) {
 		PetriNet pn = new PetriNet();
@@ -192,7 +306,7 @@ public class Exp3_Part1 {
 		t1.InputPlaceName.add("p2");
 
 		Condition T1Ct1 = new Condition(t1, "p1", TransitionCondition.NotNull);
-		Condition T1Ct2 = new Condition(t1, "p2", TransitionCondition.LessThan,"2");
+		Condition T1Ct2 = new Condition(t1, "p2", TransitionCondition.NotNull);
 		T1Ct1.SetNextCondition(LogicConnector.AND, T1Ct2);
 
 		GuardMapping grdT1 = new GuardMapping();

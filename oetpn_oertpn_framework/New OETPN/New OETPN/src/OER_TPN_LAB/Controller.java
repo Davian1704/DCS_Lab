@@ -129,8 +129,8 @@ public class Controller {
 
 		grdT2.Activations.add(new Activation(t_2, "p_i2", TransitionOperation.Move, "p_1"));
 		grdT2.Activations.add(new Activation(t_2, "p_i2", TransitionOperation.Move, "p_o1"));
-		//Send to the Supervisor:
-		//P_o1 must be turned to a data transfer that is linked to the supervisor
+		// Send to the Supervisor:
+		// P_o1 must be turned to a data transfer that is linked to the supervisor
 		t_2.GuardMappingList.add(grdT2);
 
 		t_2.Delay = 0;
@@ -152,8 +152,6 @@ public class Controller {
 		t_o2.Delay = 0;
 		pn.Transitions.add(t_o2);
 
-		
-		
 		System.out.println("Exp1 started \n ------------------------------");
 		pn.Delay = 3000;
 		// pn.Start();
