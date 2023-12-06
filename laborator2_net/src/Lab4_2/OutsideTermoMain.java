@@ -12,7 +12,7 @@ public class OutsideTermoMain {
 
     public static void main(String[] args) {
 
-        Scenario sceonario = Scenario.winterDay();
+        Scenario sceonario = Scenario.extremeEvening();
 
         Plant plant = new Plant(SIM_PERIOD, sceonario);
 

@@ -51,10 +51,10 @@ public class OutsideReferenceCalculatorComponent {
         int p0 = net.addPlace();
         net.setInitialMarkingForPlace(p0, FuzzyToken.zeroToken());
         
-        int p1OustideTemInp = net.addInputPlace();
+        p1OustideTemInp = net.addInputPlace();
 
         int t0 = net.addTransition(0, parser.parseTwoXTwoTable(reader));
-        net.addArcFromPlaceToTransition(p0, t0, 0.0);
+        net.addArcFromPlaceToTransition(p0, t0, 1.0);
         net.addArcFromPlaceToTransition(p1OustideTemInp, t0, 1.0);
 
         int p2 = net.addPlace();
@@ -65,7 +65,7 @@ public class OutsideReferenceCalculatorComponent {
 
         int t1Delay = net.addTransition(1, OneXOneTable.defaultTable());
         net.addArcFromPlaceToTransition(p2, t1Delay, 1.0);
-        net.addArcFromTransitionToPlace(p0, t1Delay);
+        net.addArcFromTransitionToPlace(t1Delay,p0);
 
         t2Out = net.addOuputTransition(parser.parseOneXOneTable(t2Table));
         net.addArcFromPlaceToTransition(p3, t2Out, 1.0);
