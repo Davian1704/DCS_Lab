@@ -166,14 +166,10 @@ public class Exp3_Part1 {
 		p33.SetName("p33");
 		mpn.PlaceList.add(p33);
 
-		DataFloat p34 = new DataFloat();
+		DataTransfer p34 = new DataTransfer();
 		p34.SetName("p34");
+		p34.Value = new TransferOperation("localhost","1080","p6");
 		mpn.PlaceList.add(p34);
-
-		DataTransfer p35 = new DataTransfer();
-		p35.SetName("p35");
-		p35.Value = new TransferOperation("localhost", "1080", "p6");
-		mpn.PlaceList.add(p35);
 
 
 		// T31 ------------------------------------------------
@@ -258,11 +254,22 @@ public class Exp3_Part1 {
 
 		// ------------------------------------------------------------------------
 
+		DataFloat constantVal = new DataFloat();
+		constantVal.SetName("constantVal");
+		constantVal.SetValue(2.0f);
+		pn.ConstantPlaceList.add(constantVal);
+		
 		DataSubPetriNet SP = new DataSubPetriNet();
 		SP.SetName("PN3");
 		SubPetri pn3 = new SubPetri(PN3());
 		SP.SetValue(pn3);
 		pn.ConstantPlaceList.add(SP);
+		
+		DataSubPetriNet SP4 = new DataSubPetriNet();
+		SP4.SetName("PN4");
+		SubPetri pn4 = new SubPetri(PN4());
+		SP4.SetValue(pn4);
+		pn.ConstantPlaceList.add(SP4);
 
 		DataFloat p1 = new DataFloat();
 		p1.SetName("p1");
@@ -306,7 +313,7 @@ public class Exp3_Part1 {
 		t1.InputPlaceName.add("p2");
 
 		Condition T1Ct1 = new Condition(t1, "p1", TransitionCondition.NotNull);
-		Condition T1Ct2 = new Condition(t1, "p2", TransitionCondition.NotNull);
+		Condition T1Ct2 = new Condition(t1, "p2", TransitionCondition.LessThan,"constantVal");
 		T1Ct1.SetNextCondition(LogicConnector.AND, T1Ct2);
 
 		GuardMapping grdT1 = new GuardMapping();
@@ -317,6 +324,20 @@ public class Exp3_Part1 {
 		grdT1.Activations.add(new Activation(t1, "p2", TransitionOperation.Move, "p3-p31"));
 
 		t1.GuardMappingList.add(grdT1);
+		
+		Condition T1Ct12 = new Condition(t1, "p1", TransitionCondition.NotNull);
+		Condition T1Ct22 = new Condition(t1, "p2", TransitionCondition.MoreThanOrEqual,"constantVal");
+		T1Ct12.SetNextCondition(LogicConnector.AND, T1Ct22);
+
+		GuardMapping grdT12 = new GuardMapping();
+		grdT12.condition = T1Ct12;
+
+		grdT12.Activations.add(new Activation(t1, "PN4", TransitionOperation.Copy, "p3"));
+		grdT12.Activations.add(new Activation(t1, "p1", TransitionOperation.Move, "p4"));
+		grdT12.Activations.add(new Activation(t1, "p2", TransitionOperation.Move, "p3-p31"));
+
+		t1.GuardMappingList.add(grdT12);
+		
 		t1.Delay = 0;
 		pn.Transitions.add(t1);
 
