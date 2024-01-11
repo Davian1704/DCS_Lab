@@ -1,0 +1,149 @@
+Lab2:
+The serialization mechanism provides the programmer with a method that saves an object on disk and restored when needed. Also by the same mechanism, an object can be transmitted remotely to another machine by using the sockets.
+
+In order to serialize an object, it will need to implement the Serializable interface.
+
+For writing and reading serialized objects, input/ output streams are used: ObjectInputStream and ObjectOutputStream.
+
+HTTP
+In this section, An HTTP server that can respond to GET requests is created. The main() function of the HttpServer class starts a thread of execution. This thread instantiates a ServerSocket object and begins listening to port 80, which is the standard HTTP protocol port.
+
+When a request appears (a client connects to port 80), the accept() method will return a Socket object. Next, a ProcesRequest object (which is of type thread of execution) is created. Then it will receive the Socket object that is returned by the accept() method as a parameter. After the ProcesRequest object is created, the server resumes waiting and will be able to serve other clients.
+
+The ProcesRequest class implements a simplified version of the HTTP protocol. After the thread is started, the input / output stream is created in the constructor of the ProcesRequest class. The request received from the client is analyzed in the thread of execution, and if this is a valid GET request, then the requested resource will be sent to the client.
+
+UDP Server
+
+A time server is built in this section that will send the current date to customers requesting it. The client accessing the time server services is also built.
+
+At the server level, a DatagramSocket object is created, this object will receive the port as a parameter on which the server will start listening.
+
+DatagramSocket socket = new DatagramSocket(1977);
+
+Next, a DatagramPacket object is being built, which will be used by the server to receive the request from the client. Once the DatagramPacket object is built, the server will start listening to the 1977 port by invoking the receive() method.
+
+
+
+Working with URLs
+
+This section discusses how to work in java with URLs.
+
+The URL is the acronym for Uniform Resource Locator and represents a reference (address) to an Internet resource. This is generally a file representing a webpage or image, but a URL can also refer to database queries, the results of some commands (programs), etc.
+
+To access an Internet resource identified by a URL in java, the first step is to create a URL object. URL utcn = new URL(“www.utcluj.ro”);
+
+The URL class contains methods that all the components of a URL can be found: getProtocol(), getPort(), getHost(), getFile(), getRef().
+
+Once the URL object has been created, the openStream() method is used to open an input stream through which the content of that URL is read.
+
+
+Read and Write to a URL
+If you wish to do more than just reading the contents of a URL, then you can call the openConnection() method within the URL class. This method will return a URLConnection object. This object can be used for writing, reading, and queries to a URL.
+Many HTML pages contain the formats (text fields, buttons, etc.) that allow data entry and transmission to the server. After filling in the fields, press a button and the web browser will send the data to the appropriate URL. The URL that receives the data is a cgi-bin script. It processes the data and sends a response to the client, which is usually another HTML page.
+
+Java programs can interact with cgi-bin scripts. They must be able to write data to a URL. This is done using the URLConnection class. The following listing exemplifies how a Java program can interact with a cgi-bin script.
+
+
+
+LAB 1
+
+Identifying a computer on the network
+
+Any computer connected to the Internet is uniquely identified by its IP address (IP is the acronym of the Internet Protocol). This is a 32-bit number, usually in the form of 4 bytes, such as: 193.226.5.33 and is called a numerical IP address. Corresponding to a numeric address, there exist a symbolic IP address, such as utcluj.ro. Also, every computer on a local network has a unique name that can be used to identify it locally.
+
+The Java class that represents the notion of IP address is InetAddress. To build an object, use the command:
+
+InetAddress address =InetAddress.getByName("121.3.1.2");
+
+To see all the ways in which InetAddress objects can be built, study the documentation of this class.
+
+Generally, a computer has only one physical connection to the network. Any information that is destined to a machine is obligated to specify the IP address of that machine. But there may be several processors on a single computer that have established a network connections, waiting for diverse information. Therefore, data sent to a destination must specify the process to which that information is directed besides the IP address of that computer. The processes are identified through ports.
+
+Any application communicating on the network is uniquely identified through a port so that the incoming packets on the host computer can be properly routed to the destination application.
+
+The values that a port number can take are between 0 and 65535 (because they are 16-bit numbers), however, numbers between 0 and 1023 are reserved for some system services, they are not recommended for use.
+
+Socket definition: A socket is a connection point on a TCP \ IP network. When two programs exist on two computers in a network wish to communicate, each one of them uses a socket. One of the programs (the server) will open a socket and then will wait for connections, the other program (the client) will connect to the server and so the exchange of information can begin. To establish a connection, the client will need to know the destination address (of the computer where the socket is opened) and the port number of the opened socket.
+
+The main operations that are made by sockets are:
+
+• Accept connections
+
+• Connect to another socket
+
+• Sending data
+
+• Receiving data
+
+• Closing connection.
+
+
+Network architecture and IP visibility
+
+Most of the times, computer networks architectures are connections of several star-shaped sub-networks (LANs is an acronym for Local Area Networks), where the center of the star is usually a router (or server). This node (router) is the connection point of the sub-network (LAN) to the outside realm (internet) and handles all data transfer from outside to nodes (eg. computers) inside the sub-network and vice-versa. Each node in the network, and also the router itself, can have a firewall for protection.
+
+
+Port forwarding
+
+The router can be configured to redirect requests (or any data transfers) through one port to a certain node (computer) in the LAN. To the outside world, it is as if the router processes all the requests. This is called port forwarding, an application of NAT (Network address translation). In complex applications, several ports can be forwarded to different nodes in the LAN, as în the picture below, resulting a routing table of the form below. NAPT is an acronym for Network Address Port Translation.
+
+
+Configure port forwarding on router
+
+Find the router IP inside the LAN: open cmd, type ipconfig, select the Default Gateway.
+
+Find the computer IP: open cmd, type ipconfig, select IPv4 Address.
+
+Find the router IP as seen from outside the LAN: use https://whatismyipaddress.com/
+
+Access the configuration page of the router by typing the router IP inside the LAN in a browser.
+
+The configuration page differs a bit for each router model, but the settings are similar!! Open the tab Forward Rules -> Port Mapping Configuration. Here, create a new rule with Enable Port Mapping checked and provide the following details:
+
+Internal Host = the computer IP (you may want to select the host from the dropdown)
+
+External Source IP Address = the outside computer IP which will have access (leave empty => any outside computer IP will have access). Leave empty for now.
+
+Protocol = UTP/TCP
+
+Internal port number = the port on your computer to which traffic will be forwarded (5060 for example)
+
+External port number = the port on the router which will be used from outside (80 for example)
+
+The TCP application will be configured such that:
+
+1. the server application runs on the computer inside the LAN with IP = computer IP. The server will start listening on port Internal port number (5060 for example)
+
+2. the client application will connect to the server using the router IP as seen from outside the LAN, using the port External port number (80 for example)
+
+
+
+Client-Server Application with a Multi-threaded Server
+
+When analyzing the server program that is presented in the previous section, it can be seen that it can serve only one client at a time. In order for the server to be able to serve multiple clients simultaneously, multi-threaded programming will be used.
+
+The basic idea is simple, that is, the server will wait for connections by calling the accept() method. When a client is connected on and the accept() method has returned a Socket, it will create a thread of execution that will serve that client, and the sever will return to waiting.
+
+
+Non-blocking sockets
+
+The Java 2 Standard Edition 1.4 introduces a new network communication mechanism through the non-blocking sockets - they allow communication between applications without blocking the call processes for methods to open a connection, read, or write data.
+
+The classic solution to build a server application that serves more clients is to use threads of execution technology and allocate a single thread of execution for each client served. By using the non-block sockets technology, the programmer will be able to deploy a server application for customer service without having to explicitly call out threads of execution to handle customer requests. Below are the basic principles of this technology and the way in which client applications and server applications can be built on non-blocking sockets technology.
+
+
+The implementation of the server consists of an infinite loop in which the selector waits for event generation. When an event occurred and a key was generated, the type of this key is checked. The possible types of keys are:
+
+• Acceptable - associated with a request for a connection from a client event
+
+• Connectable - associated with the connection acceptance by client event
+
+• Readable - read data
+
+• Writeable - write data
+
+The Selector class is responsible for maintaining a set of keys that can be active while running the server program. When an event is generated by a client, a key is constructed.
+
+Selector selector = Selector.open();
+
+In order to demultiplex the data and have access to events, a communication channel must be built which will have to be registered in the selector object. Each registered channel will have to specify the type of event that it is interested in.
