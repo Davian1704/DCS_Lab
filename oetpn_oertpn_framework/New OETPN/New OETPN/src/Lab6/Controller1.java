@@ -27,7 +27,7 @@ public class Controller1 {
 		pn.PlaceList.add(hr1);
 
 		DataFloat h1 = new DataFloat();
-		h1.SetName("h1"); // input a value to h1 from GUI input float
+		h1.SetName("h1"); //input a value to h1 from GUI input float
 		pn.PlaceList.add(h1);
 
 		DataString dc1 = new DataString();
@@ -43,7 +43,7 @@ public class Controller1 {
 		c1Previous.SetValue("No Action");
 		pn.PlaceList.add(c1Previous);
 
-		// Edited m12 into m13
+		//Edited m12 into m13
 		DataTransfer m13 = new DataTransfer();
 		m13.SetName("m13");
 		m13.Value = new TransferOperation("localhost", "1082", "m13");
@@ -99,7 +99,7 @@ public class Controller1 {
 		grdT0.Activations.add(new Activation(t0, "Decrease", TransitionOperation.Move, "c1"));
 		grdT0.Activations.add(new Activation(t0, "Decrease", TransitionOperation.Move, "c1Previous"));
 		grdT0.Activations.add(new Activation(t0, "hr1", TransitionOperation.Move, "hr1"));
-
+	
 		t0.GuardMappingList.add(grdT0);
 
 		// -------Sub guard 2---------
@@ -120,7 +120,7 @@ public class Controller1 {
 		grdT02.Activations.add(new Activation(t0, "Increase", TransitionOperation.Move, "c1"));
 		grdT02.Activations.add(new Activation(t0, "Increase", TransitionOperation.Move, "c1Previous"));
 		grdT02.Activations.add(new Activation(t0, "hr1", TransitionOperation.Move, "hr1"));
-
+		
 		t0.GuardMappingList.add(grdT02);
 		// -------Sub guard 3---------
 		Condition T0Ct11 = new Condition(t0, "h1", TransitionCondition.NotNull);
@@ -140,14 +140,14 @@ public class Controller1 {
 		grdT03.Activations.add(new Activation(t0, "No Action", TransitionOperation.Move, "c1"));
 		grdT03.Activations.add(new Activation(t0, "No Action", TransitionOperation.Move, "c1Previous"));
 		grdT03.Activations.add(new Activation(t0, "hr1", TransitionOperation.Move, "hr1"));
-
+		
 		t0.GuardMappingList.add(grdT03);
-
+		
 		t0.Delay = 0;
 		pn.Transitions.add(t0);
 
 		// T1 ------------------------------------------------
-		// MODIFY FOR 3RD CONTROLLER
+		//MODIFY FOR 3RD CONTROLLER
 		PetriTransition t1 = new PetriTransition(pn);
 		t1.TransitionName = "T1";
 		t1.InputPlaceName.add("c1");
@@ -156,13 +156,13 @@ public class Controller1 {
 
 		GuardMapping grdT1 = new GuardMapping();
 		grdT1.condition = T1Ct1;
-
+		
 		grdT1.Activations.add(new Activation(t1, "c1", TransitionOperation.Move, "po"));
-		// Now t1 activates m13
+		//Now t1 activates m13
 		grdT1.Activations.add(new Activation(t1, "c1", TransitionOperation.SendOverNetwork, "m13"));
 
 		t1.GuardMappingList.add(grdT1);
-
+		
 		t1.Delay = 0;
 		pn.Transitions.add(t1);
 
@@ -178,7 +178,7 @@ public class Controller1 {
 		grdT2.Activations.add(new Activation(t2, "po", TransitionOperation.Move, "po1"));
 
 		t2.GuardMappingList.add(grdT2);
-
+		
 		t2.Delay = 0;
 		pn.Transitions.add(t2);
 

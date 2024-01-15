@@ -14,12 +14,14 @@ import Enumerations.LogicConnector;
 import Enumerations.TransitionCondition;
 import Enumerations.TransitionOperation;
 
+
 public class Controller3 {
 	public static void main(String[] args) {
 
 		PetriNet pn = new PetriNet();
 		pn.PetriNetName = "Controller 3";
 		pn.NetworkPort = 1082;
+		// -------Run OER-TPN
 
 		System.out.println("Controller3 started \n ------------------------------");
 
@@ -29,7 +31,7 @@ public class Controller3 {
 		pn.PlaceList.add(hr3);
 
 		DataFloat h3 = new DataFloat();
-		h3.SetName("h3"); // input a value to h3 from GUI input float
+		h3.SetName("h3"); //input a value to h3 from GUI input float
 		pn.PlaceList.add(h3);
 
 		DataString dc3 = new DataString();
@@ -45,6 +47,7 @@ public class Controller3 {
 		c3Previous.SetValue("No Action");
 		pn.PlaceList.add(c3Previous);
 
+		//m32 
 		DataTransfer m32 = new DataTransfer();
 		m32.SetName("m32");
 		m32.Value = new TransferOperation("localhost", "1081", "m32");
@@ -79,6 +82,7 @@ public class Controller3 {
 		pn.ConstantPlaceList.add(Decrease);
 
 		// T0 ------------------------------------------------
+		//MODIFY FOR 3RD CONTROLLER
 		PetriTransition t0 = new PetriTransition(pn);
 		t0.TransitionName = "T0";
 		t0.InputPlaceName.add("h3");
@@ -215,13 +219,14 @@ public class Controller3 {
 		grdT1.condition = T1Ct1;
 
 		grdT1.Activations.add(new Activation(t1, "c3", TransitionOperation.Move, "po"));
-		// Now t1 activates m32
+		//Now t1 activates m32
 		grdT1.Activations.add(new Activation(t1, "c3", TransitionOperation.SendOverNetwork, "m32"));
 
 		t1.GuardMappingList.add(grdT1);
 
 		t1.Delay = 0;
 		pn.Transitions.add(t1);
+
 
 		// T2 ------------------------------------------------
 		PetriTransition t2 = new PetriTransition(pn);
@@ -249,4 +254,4 @@ public class Controller3 {
 		frame.setVisible(true);
 
 	}
-}
+}	

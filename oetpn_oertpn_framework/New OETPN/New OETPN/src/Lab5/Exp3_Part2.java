@@ -24,7 +24,7 @@ public class Exp3_Part2 {
 		constValue.SetName("constValue");
 		constValue.SetValue(1.0f);
 		pn.ConstantPlaceList.add(constValue);
-		
+
 		DataFloat p21 = new DataFloat();
 		p21.SetName("p21");
 		p21.SetValue(1.0f);
@@ -45,8 +45,8 @@ public class Exp3_Part2 {
 		DataFloat p25 = new DataFloat();
 		p25.SetName("p25");
 		pn.PlaceList.add(p25);
-		
-	
+
+
 
 		// T21 ------------------------------------------------
 		PetriTransition t21 = new PetriTransition(pn);
@@ -101,7 +101,7 @@ public class Exp3_Part2 {
 		t23.Delay = 0;
 		pn.Transitions.add(t23);
 
-		System.out.println("Exp2 started \n ------------------------------");
+		System.out.println("Ex3_2 started \n ------------------------------");
 		pn.Delay = 3000;
 
 		PetriNetWindow frame = new PetriNetWindow(false);

@@ -25,7 +25,7 @@ public class Controller2 {
 		pn.PlaceList.add(hr2);
 
 		DataFloat h2 = new DataFloat();
-		h2.SetName("h2"); // input a value to h2 from GUI input float
+		h2.SetName("h2"); //input a value to h2 from GUI input float
 		pn.PlaceList.add(h2);
 
 		DataString dc2 = new DataString();
@@ -41,7 +41,7 @@ public class Controller2 {
 		c2Previous.SetValue("No Action");
 		pn.PlaceList.add(c2Previous);
 
-		// Edited m12 into m32
+		//Edited m12 into m32
 		DataString m32 = new DataString();
 		m32.SetName("m32");
 		pn.PlaceList.add(m32);
@@ -71,7 +71,7 @@ public class Controller2 {
 		pn.ConstantPlaceList.add(Decrease);
 
 		// T0 ------------------------------------------------
-		// MODIFY FOR 3RD CONTROLLER
+		//MODIFY FOR 3RD CONTROLLER
 		PetriTransition t0 = new PetriTransition(pn);
 		t0.TransitionName = "T0";
 		t0.InputPlaceName.add("h2");
@@ -86,7 +86,7 @@ public class Controller2 {
 		Condition T0Ct3 = new Condition(t0, "c2Previous", TransitionCondition.NotNull);
 		Condition T0Ct4 = new Condition(t0, "po2", TransitionCondition.NotNull);
 		Condition T0Ct5 = new Condition(t0, "hr2", TransitionCondition.MoreThan, "h2");
-		// modified condition for m32
+		//modified condition for m32
 		Condition T0Ct6 = new Condition(t0, "m32", TransitionCondition.Equal, "Decrease");
 
 		T0Ct5.SetNextCondition(LogicConnector.AND, T0Ct6);
@@ -101,7 +101,7 @@ public class Controller2 {
 		grdT0.Activations.add(new Activation(t0, "Decrease", TransitionOperation.Move, "c2"));
 		grdT0.Activations.add(new Activation(t0, "Decrease", TransitionOperation.Move, "c2Previous"));
 		grdT0.Activations.add(new Activation(t0, "hr2", TransitionOperation.Move, "hr2"));
-
+		
 		t0.GuardMappingList.add(grdT0);
 
 		// -------Sub guard 2---------
@@ -110,7 +110,7 @@ public class Controller2 {
 		Condition T0Ct9 = new Condition(t0, "c2Previous", TransitionCondition.NotNull);
 		Condition T0Ct10 = new Condition(t0, "po2", TransitionCondition.NotNull);
 		Condition T0Ct11 = new Condition(t0, "hr2", TransitionCondition.MoreThan, "h2");
-		// modified condition for m32
+		//modified condition for m32
 		Condition T0Ct12 = new Condition(t0, "m32", TransitionCondition.Equal, "Increase");
 
 		T0Ct11.SetNextCondition(LogicConnector.AND, T0Ct12);
@@ -125,7 +125,7 @@ public class Controller2 {
 		grdT02.Activations.add(new Activation(t0, "No Action", TransitionOperation.Move, "c2"));
 		grdT02.Activations.add(new Activation(t0, "No Action", TransitionOperation.Move, "c2Previous"));
 		grdT02.Activations.add(new Activation(t0, "hr2", TransitionOperation.Move, "hr2"));
-
+		
 		t0.GuardMappingList.add(grdT02);
 
 		// -------Sub guard 3---------
@@ -146,7 +146,7 @@ public class Controller2 {
 		grdT03.Activations.add(new Activation(t0, "Increase", TransitionOperation.Move, "c2"));
 		grdT03.Activations.add(new Activation(t0, "Increase", TransitionOperation.Move, "c2Previous"));
 		grdT03.Activations.add(new Activation(t0, "hr2", TransitionOperation.Move, "hr2"));
-
+		
 		t0.GuardMappingList.add(grdT03);
 
 		// -------Sub guard 4---------
@@ -155,7 +155,7 @@ public class Controller2 {
 		Condition T0Ct20 = new Condition(t0, "c2Previous", TransitionCondition.NotNull);
 		Condition T0Ct21 = new Condition(t0, "po2", TransitionCondition.NotNull);
 		Condition T0Ct22 = new Condition(t0, "hr2", TransitionCondition.Equal, "h2");
-		// modified condition for m32
+		//modified condition for m32
 		Condition T0Ct23 = new Condition(t0, "m32", TransitionCondition.Equal, "Decrease");
 
 		T0Ct22.SetNextCondition(LogicConnector.AND, T0Ct23);
@@ -170,7 +170,7 @@ public class Controller2 {
 		grdT04.Activations.add(new Activation(t0, "No Action", TransitionOperation.Move, "c2"));
 		grdT04.Activations.add(new Activation(t0, "No Action", TransitionOperation.Move, "c2Previous"));
 		grdT04.Activations.add(new Activation(t0, "hr2", TransitionOperation.Move, "hr2"));
-
+		
 		t0.GuardMappingList.add(grdT04);
 
 		// -------Sub guard 5---------
@@ -179,7 +179,7 @@ public class Controller2 {
 		Condition T0Ct26 = new Condition(t0, "c2Previous", TransitionCondition.NotNull);
 		Condition T0Ct27 = new Condition(t0, "po2", TransitionCondition.NotNull);
 		Condition T0Ct28 = new Condition(t0, "hr2", TransitionCondition.Equal, "h2");
-		// Modified condition for m32
+		//Modified condition for m32
 		Condition T0Ct29 = new Condition(t0, "m32", TransitionCondition.Equal, "Increase");
 
 		T0Ct28.SetNextCondition(LogicConnector.AND, T0Ct29);
@@ -194,7 +194,7 @@ public class Controller2 {
 		grdT05.Activations.add(new Activation(t0, "Increase", TransitionOperation.Move, "c2"));
 		grdT05.Activations.add(new Activation(t0, "Increase", TransitionOperation.Move, "c2Previous"));
 		grdT05.Activations.add(new Activation(t0, "hr2", TransitionOperation.Move, "hr2"));
-
+		
 		t0.GuardMappingList.add(grdT05);
 
 		t0.Delay = 0;
@@ -212,7 +212,7 @@ public class Controller2 {
 		grdT1.Activations.add(new Activation(t1, "c2", TransitionOperation.Move, "po"));
 
 		t1.GuardMappingList.add(grdT1);
-
+		
 		t1.Delay = 0;
 		pn.Transitions.add(t1);
 
@@ -228,7 +228,7 @@ public class Controller2 {
 		grdT2.Activations.add(new Activation(t2, "po", TransitionOperation.Move, "po2"));
 
 		t2.GuardMappingList.add(grdT2);
-
+		
 		t2.Delay = 0;
 		pn.Transitions.add(t2);
 
