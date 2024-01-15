@@ -266,7 +266,7 @@ public class Controller {
 		lstInput = new ArrayList<String>();
 		lstInput.add("P7");
 		lstInput.add("P13");
-		grdt5.Activations.add(new Activation(t9, lstInput, TransitionOperation.Add, "P8"));
+		grdt9.Activations.add(new Activation(t9, lstInput, TransitionOperation.Add, "P8"));
 		
 		t9.GuardMappingList.add(grdt9);
 		t9.Delay = 1;
