@@ -15,7 +15,7 @@ import Enumerations.LogicConnector;
 import Enumerations.TransitionCondition;
 import Enumerations.TransitionOperation;
 
-public class Controller {
+public class Controller{
 	public static void main(String[] args) {
 		PetriNet pn = new PetriNet();
 		pn.PetriNetName = "PID";
@@ -25,6 +25,16 @@ public class Controller {
 		const8.SetName("const8");
 		const8.SetValue(0.8f);
 		pn.ConstantPlaceList.add(const8);
+		
+		DataFloat const2 = new DataFloat();
+		const2.SetName("const2");
+		const2.SetValue(0.2f);
+		pn.ConstantPlaceList.add(const2);
+		
+		DataFloat const7 = new DataFloat();
+		const7.SetName("const7");
+		const7.SetValue(0.7f);
+		pn.ConstantPlaceList.add(const7);
 		
 		DataFloat p0 = new DataFloat();
 		p0.SetName("P0");
@@ -37,6 +47,7 @@ public class Controller {
 		
 		DataFloat p2 = new DataFloat();
 		p2.SetName("P2");
+		p2.SetValue(0.5f);
 		pn.PlaceList.add(p2);
 		
 		DataFloat p3 = new DataFloat();
@@ -45,6 +56,7 @@ public class Controller {
 		
 		DataFloat p4 = new DataFloat();
 		p4.SetName("P4");
+		p4.SetValue(0.5f);
 		pn.PlaceList.add(p4);
 		
 		DataFloat p5 = new DataFloat();
@@ -91,9 +103,25 @@ public class Controller {
 		p14.SetName("P14");
 		pn.PlaceList.add(p14);
 		
+		DataFloat p5prod = new DataFloat();
+		p5prod.SetName("P5prod");
+		pn.PlaceList.add(p5prod);
+		
+		DataFloat p7prod = new DataFloat();
+		p7prod.SetName("P7prod");
+		pn.PlaceList.add(p7prod);
+		
+		DataFloat p14prod = new DataFloat();
+		p14prod.SetName("P14prod");
+		pn.PlaceList.add(p14prod);
+		
+		DataFloat p8prod = new DataFloat();
+		p8prod.SetName("P8prod");
+		pn.PlaceList.add(p8prod);
+		
 		DataTransfer pTrans = new DataTransfer();
 		pTrans.SetName("PTrans");
-		pTrans.Value = new TransferOperation("localhost", "1090","PTrans");
+		pTrans.Value = new TransferOperation("localhost", "1090","P6");
 		pn.PlaceList.add(pTrans);
 		
 		// T0 ------------------------------------------------
@@ -156,17 +184,17 @@ public class Controller {
 		PetriTransition t3 = new PetriTransition(pn);
 		t3.TransitionName = "t3";
 		t3.InputPlaceName.add("P14");
-		t3.InputPlaceName.add("P5");
+		t3.InputPlaceName.add("P5prod");
 		
 		Condition t3Ct1 = new Condition(t3, "P14", TransitionCondition.NotNull);
-		Condition t3Ct2 = new Condition(t3, "P5", TransitionCondition.NotNull);
+		Condition t3Ct2 = new Condition(t3, "P5prod", TransitionCondition.NotNull);
 		t3Ct1.SetNextCondition(LogicConnector.AND, t3Ct2);
 		
 		GuardMapping grdt3 = new GuardMapping();
 		grdt3.condition = t3Ct1;
 		lstInput = new ArrayList<String>();
 		lstInput.add("P14");
-		lstInput.add("P5");
+		lstInput.add("P5prod");
 		grdt3.Activations.add(new Activation(t3, lstInput, TransitionOperation.Add, "P8"));
 		
 		t3.GuardMappingList.add(grdt3);
@@ -190,17 +218,17 @@ public class Controller {
 		// T5 ------------------------------------------------
 		PetriTransition t5 = new PetriTransition(pn);
 		t5.TransitionName = "t5";
-		t5.InputPlaceName.add("P8");
+		t5.InputPlaceName.add("P8prod");
 		t5.InputPlaceName.add("P11");
 		
-		Condition t5Ct1 = new Condition(t5, "P8", TransitionCondition.NotNull);
+		Condition t5Ct1 = new Condition(t5, "P8prod", TransitionCondition.NotNull);
 		Condition t5Ct2 = new Condition(t5, "P11", TransitionCondition.NotNull);
 		t5Ct1.SetNextCondition(LogicConnector.AND, t5Ct2);
 		
 		GuardMapping grdt5 = new GuardMapping();
 		grdt5.condition = t5Ct1;
 		lstInput = new ArrayList<String>();
-		lstInput.add("P8");
+		lstInput.add("P8prod");
 		lstInput.add("P11");
 		grdt5.Activations.add(new Activation(t5, lstInput, TransitionOperation.Add, "P9"));
 		grdt5.Activations.add(new Activation(t5, lstInput, TransitionOperation.Add, "P10"));
@@ -217,7 +245,7 @@ public class Controller {
 		
 		GuardMapping grdt6 = new GuardMapping();
 		grdt6.condition = t6Ct1;
-		grdt6.Activations.add(new Activation(t6, "P10", TransitionOperation.Move, "P11"));
+		grdt6.Activations.add(new Activation(t6, "P10", TransitionOperation.Copy, "P11"));
 		grdt6.Activations.add(new Activation(t6, "P10", TransitionOperation.Move, "P1"));
 		
 		t6.GuardMappingList.add(grdt6);
@@ -246,25 +274,28 @@ public class Controller {
 		
 		GuardMapping grdt8 = new GuardMapping();
 		grdt8.condition = t8Ct1;
-		grdt8.Activations.add(new Activation(t8, "P12", TransitionOperation.Move, "P13"));
-		
+		lstInput = new ArrayList<String>();
+		lstInput.add("P12");
+		lstInput.add("const2");
+		grdt8.Activations.add(new Activation(t8, lstInput, TransitionOperation.Add, "P13"));
+		//delay also multiplies with 0.2 now
 		t8.GuardMappingList.add(grdt8);
 		t8.Delay = 1;
 		pn.Transitions.add(t8);
 		// T9 ------------------------------------------------
 		PetriTransition t9 = new PetriTransition(pn);
 		t9.TransitionName = "t9";
-		t9.InputPlaceName.add("P7");
+		t9.InputPlaceName.add("P7prod");
 		t9.InputPlaceName.add("P13");
 		
-		Condition t9Ct1 = new Condition(t9, "P7", TransitionCondition.NotNull);
+		Condition t9Ct1 = new Condition(t9, "P7prod", TransitionCondition.NotNull);
 		Condition t9Ct2 = new Condition(t9, "P13", TransitionCondition.NotNull);
 		t9Ct1.SetNextCondition(LogicConnector.AND, t9Ct2);
 		
 		GuardMapping grdt9 = new GuardMapping();
 		grdt9.condition = t9Ct1;
 		lstInput = new ArrayList<String>();
-		lstInput.add("P7");
+		lstInput.add("P7prod");
 		lstInput.add("P13");
 		grdt9.Activations.add(new Activation(t9, lstInput, TransitionOperation.Add, "P8"));
 		
@@ -272,6 +303,79 @@ public class Controller {
 		t9.Delay = 1;
 		pn.Transitions.add(t9);
 		
+		// T10 ------------------------------------------------
+				PetriTransition t10 = new PetriTransition(pn);
+				t10.TransitionName = "t10";
+				t10.InputPlaceName.add("P7");
+				
+				Condition t10Ct1 = new Condition(t10, "P7", TransitionCondition.NotNull);
+
+				GuardMapping grdt10 = new GuardMapping();
+				grdt10.condition = t10Ct1;
+				lstInput = new ArrayList<String>();
+				lstInput.add("P7");
+				lstInput.add("const8");
+				grdt10.Activations.add(new Activation(t10, lstInput, TransitionOperation.Add, "P7prod"));
+				
+				t10.GuardMappingList.add(grdt10);
+				t10.Delay = 0;
+				pn.Transitions.add(t10);
+				
+		// T11 ------------------------------------------------
+				PetriTransition t11 = new PetriTransition(pn);
+				t11.TransitionName = "t11";
+				t11.InputPlaceName.add("P5");
+				
+				Condition t11Ct1 = new Condition(t11, "P5", TransitionCondition.NotNull);
+
+				GuardMapping grdt11 = new GuardMapping();
+				grdt11.condition = t11Ct1;
+				lstInput = new ArrayList<String>();
+				lstInput.add("P5");
+				lstInput.add("const8");
+				grdt11.Activations.add(new Activation(t11, lstInput, TransitionOperation.Add, "P5prod"));
+				
+				t11.GuardMappingList.add(grdt11);
+				t11.Delay = 0;
+				pn.Transitions.add(t11);
+				
+	// T12 ------------------------------------------------
+				PetriTransition t12 = new PetriTransition(pn);
+				t12.TransitionName = "t12";
+				t12.InputPlaceName.add("P14");
+				
+				Condition t12Ct1 = new Condition(t12, "P14", TransitionCondition.NotNull);
+
+				GuardMapping grdt12 = new GuardMapping();
+				grdt12.condition = t12Ct1;
+				lstInput = new ArrayList<String>();
+				lstInput.add("P14");
+				lstInput.add("const2");
+				grdt12.Activations.add(new Activation(t12, lstInput, TransitionOperation.Add, "P14prod"));
+				
+				t12.GuardMappingList.add(grdt12);
+				t12.Delay = 0;
+				pn.Transitions.add(t12);
+				
+	// T13 ------------------------------------------------
+				PetriTransition t13 = new PetriTransition(pn);
+				t13.TransitionName = "t13";
+				t13.InputPlaceName.add("P8");
+				
+				Condition t13Ct1 = new Condition(t13, "P8", TransitionCondition.NotNull);
+
+				GuardMapping grdt13 = new GuardMapping();
+				grdt13.condition = t13Ct1;
+				lstInput = new ArrayList<String>();
+				lstInput.add("P8");
+				lstInput.add("const7");
+				grdt13.Activations.add(new Activation(t13, lstInput, TransitionOperation.Add, "P8prod"));
+				
+				t13.GuardMappingList.add(grdt13);
+				t13.Delay = 0;
+				pn.Transitions.add(t13);
+				
+				
 		System.out.println("Controller started \n ------------------------------");
 
 		pn.Delay = 2000;

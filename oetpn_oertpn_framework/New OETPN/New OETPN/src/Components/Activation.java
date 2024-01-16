@@ -590,6 +590,11 @@ public class Activation implements Serializable {
 
 		if (temp instanceof DataSubPetriNet) {
 			result.SetValue((PetriObject) ((DataSubPetriNet) temp).clone());
+			
+		}
+		
+		if(temp instanceof DataFloatFloat) {
+			result.SetValue((PetriObject) ((DataFloatFloat) temp).clone());
 		}
 
 	}

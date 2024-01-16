@@ -33,7 +33,7 @@ public class FloatFloatExample {
 		// ----------Constant value to increment p1------------
 		DataFloatFloat Const = new DataFloatFloat();
 		Const.SetName("Const");
-		Const.SetValue(new FloatFloat(2.0f, 2.0f));
+		Const.SetValue(new FloatFloat(2.0f, 1.0f));
 		pn.ConstantPlaceList.add(Const);
 
 		// T1 ------------------------------------------------
@@ -41,7 +41,7 @@ public class FloatFloatExample {
 		t1.TransitionName = "t1";
 		t1.InputPlaceName.add("p1");
 
-		Condition T1Ct1 = new Condition(t1, "p1", TransitionCondition.NotNull);
+		Condition T1Ct1 = new Condition(t1, "p1", TransitionCondition.LessThan_FloatFloat, "Const");
 
 		GuardMapping grdT1 = new GuardMapping();
 		grdT1.condition = T1Ct1;
